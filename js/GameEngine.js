@@ -27,12 +27,13 @@ const DOWN = 4;
 const UP = 5;
 
 const MAPW = 400;
-const MAPH = 700;
+const MAPH = 720;
 
 /******************* END OF Declare game specific data and functions *****************/
 
 let counter = 1;
-
+let pause = false;
+let game;
 
 
 function spawnBlock()
@@ -123,7 +124,7 @@ function playGame()
 
 
     /* Always create a game that uses the gameObject array */
-    let game = new TetrisGame();
+    game = new TetrisGame();
 
     /* Always play the game */
     game.start();
@@ -132,25 +133,59 @@ function playGame()
     /* If they are needed, then include any game-specific mouse and keyboard listners */
     document.addEventListener("keydown", function (e)
     {
-    if (e.keyCode === 37)  // left
-    {
-        gameObjects[counter-1].move(LEFT);
-    }
-    else if (e.keyCode === 39) // right
-    {
-        gameObjects[counter-1].move(RIGHT);
-    }
-    else if (e.keyCode === 32) // space
-    {
-        gameObjects[counter-1].move(ROTATE);
-    }
-    else if (e.keyCode === 40) // down
-    {
-        gameObjects[counter-1].move(DOWN);
-    }
-    else if (e.keyCode === 38) // up
-    {
-        gameObjects[counter-1].move(UP);
-    }
+        let block = gameObjects[counter-1];
+        let xLeftUp = block.imageX / 20;
+        let yLeftUp = block.imageY / 20;
+        let xRightUp = block.imageWidth / 20 + xLeftUp;
+        let yLeftDown = block.imageHeight / 20 + yLeftUp;
+        let xRightDown = xRightUp;
+        let yRightDown = yLeftDown;
+        let reducedBlockMatrix = reduceZeros(block.arrayView);
+        if (e.keyCode === 37)  // left
+        {
+            if (block.updown == 1) {
+                if (game.checkFillSurroundingOfBlock(xLeftUp + 1, yLeftUp, xRightDown + 1, yRightDown, reducedBlockMatrix, block, false) == true){
+                    gameObjects[counter-1].move(LEFT);
+                }
+            }
+            else {
+                if (game.checkFillSurroundingOfBlock(xLeftUp - 1, yLeftUp, xRightDown - 1, yRightDown, reducedBlockMatrix, block, false) == true){
+                    gameObjects[counter-1].move(LEFT);
+                }
+            }
+        }
+        else if (e.keyCode === 39) // right
+        {
+            if (block.updown == 1) {
+                if (game.checkFillSurroundingOfBlock(xLeftUp - 1, yLeftUp, xRightDown - 1, yRightDown, reducedBlockMatrix, block, false) == true){
+                    gameObjects[counter-1].move(RIGHT);
+                }
+            }
+            else {
+                if (game.checkFillSurroundingOfBlock(xLeftUp + 1, yLeftUp, xRightDown + 1, yRightDown, reducedBlockMatrix, block, false) == true){
+                    gameObjects[counter-1].move(RIGHT);
+                }
+            }
+        }
+        else if (e.keyCode === 32) // space
+        {
+            if (game.checkFillSurroundingOfBlock(xLeftUp - 1, yLeftUp, xRightDown - 1, yRightDown, reducedBlockMatrix, block, false) == true
+            && game.checkFillSurroundingOfBlock(xLeftUp + 1, yLeftUp, xRightDown + 1, yRightDown, reducedBlockMatrix, block, false) == true){
+                gameObjects[counter-1].move(ROTATE);
+            }
+        }
+        else if (e.keyCode === 40) // down
+        {
+            gameObjects[counter-1].move(DOWN);
+        }
+        else if (e.keyCode === 38) // up
+        {
+            gameObjects[counter-1].move(UP);
+        }
+        else if (e.keyCode === 80) // p
+        {
+            pause = !pause;
+            new TetrisGame();
+        }
 });
 }

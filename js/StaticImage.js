@@ -15,10 +15,18 @@ class StaticImage extends GameObject
         this.height = height;
         this.x = x;
         this.y = y;
+        this.drawGameOverLines();
+    }
+
+    drawGameOverLines() {
     }
 
     render()
     {
         ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+        ctx.strokeStyle = 'red';
+        ctx.lineWidth = 0.04;
+        ctx.rect(0,this.height / 2,this.width,40);
+        ctx.stroke();
     }
 }
