@@ -1,0 +1,46 @@
+/* Author: Derek O Reilly, Dundalk Institute of Technology, Ireland. */
+/* style class for game's container, canvas and loading message      */
+
+#gameContainer
+{
+    width:400px;
+    height:738px;
+    outline: 2px solid black;
+    /* style the gameContainer if the game includes non-canvas elements */
+}
+
+#gameCanvas
+{
+    /* the canvas styling usually does not change */
+    width:400px;
+    height:720px;
+}
+
+#loadingMessage
+{
+    /* the loading message styling usually does not change */
+    position:absolute;
+    top:100px;
+    left:100px;
+    z-index:100;
+    font-size:50px;
+}
+
+#gameOverScreen
+{
+    position:absolute;
+    top:100px;
+    left:100px;
+    z-index:100;
+    font-size:50px;
+}
+
+#scoreText
+{
+    background-color: white;
+    color: black;
+    margin-top: -2px;
+    font-family: "Comic Sans MS", "Comic Sans", bold;
+    font-size: 15px;
+    text-align: center;
+}
